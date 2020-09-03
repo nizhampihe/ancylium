@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta charset="UTF-8" />
+  <title>Ancylium RPG</title>
+  <style>
+    *{
+      margin: 0px ;
+      padding: 0px ;
+    }
+
+    body {
+      text-align: center ;
+      background-color: blue ;
+    }
+
+    .tombol {
+      position: relative ;
+      background-color: green ;
+      padding: 10px ;
+      display: inline-block ;
+      cursor: pointer ;
+    }
+  </style>
+  <!--<link rel="stylesheet" href="styles.css" />-->
+</head>
+<body>
+  <h1>Ancylium Online RPG</h1>
+  <div class="tombol">Mulai</div>
+</body>
+<script lang="javascript">
+  var s = true ;
+  var ws = new WebSocket (location.origin.replace (/^http/, "ws")) ;
+  var i = document.getElementsByClassName ("tombol") [0] ;
+  i.addEventListener ("click", function ()
+  {
+    i.style.backgroundColor = s ? "red" : "green";
+    ws.send (s ? "please be" : "chu chu yey") ;
+    s = !s ;
+  }) ;
+  ws.onopen = function (event)
+  {
+    ws.send ("chu chu yey") ;
+  }
+</script>
+</html>

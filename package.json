@@ -1,0 +1,14 @@
+{
+  "name": "ancylium",
+  "version": "1.0.0",
+  "description": "online rpg",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "game"
+  ],
+  "author": "nizhampihe",
+  "license": "MIT"
+}
