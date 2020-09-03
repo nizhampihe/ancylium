@@ -13,7 +13,6 @@ function wscon (req)
 var wsparse = function (byte)
 {
   this.opcode = byte.readUInt8 (0) & 0xF ;
-  if (opcode == 8) socket.end () ;
   var masked = byte.readUInt8 (1) >>> 7 & 0x1 ;
   this.length = byte.readUInt8 (1) & 0x7F ;
   var offset = 2 ;
@@ -135,6 +134,7 @@ require ("net").createServer (function (socket)
     else if (wstat)
     {
       var parsed = new wsparse (data) ;
+      if (parsed.message == 8) socket.end () ;
       console.log (parsed.message) ;
     }
     else
