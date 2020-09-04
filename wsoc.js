@@ -54,7 +54,7 @@ function wsfram (mess)
 
 function wskey (req)
 {
-  var ret = false ;
+  var ret = "anjing" ;
   var header = req.toString ().split ("\r\n") ;
   header.forEach (function (item)
   {
@@ -95,7 +95,7 @@ require ("net").createServer (function (socket)
       if (wscon (data))
       {
         var key = require ("crypto").createHash ("sha1").update (wskey (data) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", "binary").digest ("base64") ;
-        console.log (wskey (data)) ;
+        console.log (data.toString ().split ("\r\n")) ;
         console.log (key) ;
         socket.write (httpv (data) + 
           " 101 Switching Protocols\r\n" +
