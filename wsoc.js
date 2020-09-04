@@ -4,7 +4,7 @@ function wscon (req)
   var header = req.toString ().split ("\r\n") ;
   header.forEach (function (item)
   {
-    if (item === "Connection: Upgrade")
+    if (item === "Upgrade: websocket")
       ret = true ;
   }) ;
   return ret ;
@@ -59,8 +59,7 @@ function wskey (req)
   header.forEach (function (item)
   {
     item = item.split (": ") ;
-    if (item [0] === "Sec-WebSocket-Key")
-      ret = item [1] ;
+    if (item [0] === "Sec-WebSocket-Key") ret = item [1] ;
   }) ;
   return ret ;
 }
@@ -79,15 +78,15 @@ var sockets = [] ;
 
 require ("net").createServer (function (socket)
 {
-  var wstat = false ;
   sockets.push (socket) ;
-  console.log (socket.remoteAddress + " : " + socket.remotePort + " connection") ;
+  //console.log (socket.remoteAddress + " : " + socket.remotePort + " connection") ;
+  //console.log ("connected " + sockets.length) ;
 
   socket.on ("end", function ()
   {
     sockets.splice (sockets.indexOf (socket), 1) ;
-    console.log (socket.remoteAddress + " : " + socket.remotePort + " disconnect") ;
-    console.log ("connected " + sockets.length) ;
+    //console.log (socket.remoteAddress + " : " + socket.remotePort + " disconnect") ;
+    //console.log ("connected " + sockets.length) ;
   }) ;
   socket.on ("data", function (data)
   {
@@ -96,13 +95,15 @@ require ("net").createServer (function (socket)
       if (wscon (data))
       {
         var key = require ("crypto").createHash ("sha1").update (wskey (data) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", "binary").digest ("base64") ;
+        console.log (wskey (data)) ;
+        console.log (key) ;
         socket.write (httpv (data) + 
           " 101 Switching Protocols\r\n" +
           "Upgrade: websocket\r\n" +
           "Connection: Upgrade\r\n" +
           "Sec-WebSocket-Accept: " + key + "\r\n\r\n", function ()
         {
-          wstat = true ;
+          socket.wstat = true ;
         }) ;
       }
       else
@@ -138,15 +139,19 @@ require ("net").createServer (function (socket)
         }
       }
     }
-    else if (wstat)
+    else if (socket.wstat)
     {
       var parsed = new wsparse (data) ;
-      if (parsed.opcode == 8) socket.end () ;
+      if (parsed.opcode == 8)
+      {
+        socket.wstat = undefined ;
+        socket.end () ;
+      }
       else
       {
-        sockets.forEach (function (socket)
+        sockets.forEach (function (socketi)
         {
-          socket.write (wsfram (parsed.message)) ;
+          if (socketi.wstat) socketi.write (wsfram (parsed.message)) ;
         }) ;
       }
     }
