@@ -59,7 +59,7 @@ function wskey (req)
   header.forEach (function (item)
   {
     item = item.split (": ") ;
-    if (item [0] === "Sec-WebSocket-Key") ret = item [1] ;
+    if (item [0].toLowerCase () === "sec-websocket-key") ret = item [1] ;
   }) ;
   return ret ;
 }
@@ -95,8 +95,8 @@ require ("net").createServer (function (socket)
       if (wscon (data))
       {
         var key = require ("crypto").createHash ("sha1").update (wskey (data) + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11", "binary").digest ("base64") ;
-        console.log (data.toString ().split ("\r\n")) ;
-        console.log (key) ;
+        //console.log (data.toString ().split ("\r\n")) ;
+        //console.log (key) ;
         socket.write (httpv (data) + 
           " 101 Switching Protocols\r\n" +
           "Upgrade: websocket\r\n" +
