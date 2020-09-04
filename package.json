@@ -2,13 +2,16 @@
   "name": "ancylium",
   "version": "1.0.0",
   "description": "online rpg",
-  "main": "index.js",
+  "main": "wsoc.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "node wsoc.js"
   },
   "keywords": [
-    "game"
+    "game", "online rpg"
   ],
+  "engines": {
+    "node" : "12.18.3"
+  },
   "author": "nizhampihe",
   "license": "MIT"
 }

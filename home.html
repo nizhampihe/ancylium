@@ -22,12 +22,24 @@
       display: inline-block ;
       cursor: pointer ;
     }
+
+    #kalimat {
+      text-align: left ;
+      height: 50px ;
+      overflow: hidden ;
+      overflow-y: scroll ;
+      position: relative ;
+      background-color: green ;
+      padding: 10px ;
+      display: block ;
+    }
   </style>
   <!--<link rel="stylesheet" href="styles.css" />-->
 </head>
 <body>
   <h1>Ancylium Online RPG</h1>
   <div class="tombol">Mulai</div>
+  <div id="kalimat"></div>
 </body>
 <script lang="javascript">
   var s = true ;
@@ -42,6 +54,10 @@
   ws.onopen = function (event)
   {
     ws.send ("chu chu yey") ;
-  }
+  } ;
+  ws.onmessage = function (event)
+  {
+    document.getElementById ("kalimat").innerHTML += event.data + "<br>"
+  } ;
 </script>
 </html>

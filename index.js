@@ -53,8 +53,8 @@ require ("net")
       socket.write (data
         .toString ()
         .split ("\r\n") [0]
-        .split (" ") [2]
-        + " 404 Not Found\r\n\r\n",
+        .split (" ") [2] +
+        " 404 Not Found\r\n\r\n",
       function ()
       {
         socket.end () ;
